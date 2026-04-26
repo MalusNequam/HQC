@@ -174,3 +174,4 @@ ek, dk = A.Keygen(seed)
 # Übergib nur ek an die Encryption
 t2 = A.Key_Encryption(ek, m, theta)
 print(t2)
+"test"
