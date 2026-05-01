@@ -3,11 +3,11 @@ from sage import *
 from Crypto.Hash import SHAKE256, SHA3_256, SHA3_512
 import random
 
-#XOF_DOMAIN_SEPARATOR = b'\x00'
-#G_DOMAIN_SEPARATOR   = b'\x01'
-#H_DOMAIN_SEPARATOR   = b'\x02'
-#I_DOMAIN_SEPARATOR   = b'\x03'
-#J_DOMAIN_SEPARATOR   = b'\x04'"
+# XOF_DOMAIN_SEPARATOR = b'\x00'
+# G_DOMAIN_SEPARATOR   = b'\x01'
+# H_DOMAIN_SEPARATOR   = b'\x02'
+# I_DOMAIN_SEPARATOR   = b'\x03'
+# J_DOMAIN_SEPARATOR   = b'\x04'"
 class HQC:
 
 
@@ -27,6 +27,8 @@ class HQC:
         self.F = GF(2)
         self.R = PolynomialRing(self.F, 'x')
         self.x = self.R.gen()
+        self.u_length = 0
+        self.v_length = 0
 
 
         self.S = self.R.quotient(self.x**self.n + 1, "xbar")
@@ -151,10 +153,32 @@ class HQC:
         ctx_theta, e = self.SampleFixedWeightVect(ctx_theta, self.R_e)
         ctx_theta, r_1 = self.SampleFixedWeightVect(ctx_theta, self.R_r)
         u = r_1 + e * r_2
-        # v = 0 * s
-        # u = self.poly_to_bytes(u)
-        # v = self.poly_to_bytes(v)
-        # c_pke = (u + v)
+
+        v = r_1 + e
+
+        u = self.poly_to_bytes(u)
+        v = self.poly_to_bytes(v)
+        self.u_length = len(u)
+        self.v_length = len(v)
+
+        c_pke = (u + v)
+        return c_pke
+
+    def Key_decryption(self,dk_pke, c_pke):
+
+        # Parse decryption key
+        seed_pke = dk_pke[0:len(dk_pke)- self.n_size]
+        ctx_pke = self.XOF_init(seed_pke)
+        ctx_pke, y = self.SampleFixedWeightVect(ctx_pke, self.R_w)
+
+        # Parse ciphertext
+        u = c_pke[0:self.u_length]
+        v = c_pke[self.u_length: len(c_pke)]
+
+
+        # create plaintext m
+        print(self.bytes_to_poly(u))
+        print(self.bytes_to_poly(v))
         return u
 
 
@@ -163,15 +187,18 @@ class HQC:
 
 
 
-A = HQC(n=16, n1=1, n2=1, lev=1, R_w=5, R_e=2, R_r=2, delta=2)
 
-seed = b"1"
+
+
+A = HQC(n=16, n1=1, n2=1, lev=1, R_w=5, R_e=3, R_r=2, delta=2)
+
+seed = b"123546"
 m = "HAllO"
-theta = b"42"
+theta = b"432"
 
 ek, dk = A.Keygen(seed)
 
 # Übergib nur ek an die Encryption
 t2 = A.Key_Encryption(ek, m, theta)
 print(t2)
-"test"
+t3 = A.Key_decryption(dk, t2)
