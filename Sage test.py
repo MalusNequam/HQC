@@ -1,25 +1,15 @@
-# Minimales SageMath Testprogramm (test_sage.py)
+import numpy as np
+import komm
+import sys
+import json
 
+RM = komm.ReedMullerCode(1,8)
+decoder = komm.ReedDecoder(RM)
 
-def sage_test():
-    # Symbolische Variable definieren
-    x = var('x')
-    
-    # Funktion definieren
-    f = sin(x^2)
-    
-    # Berechnung: Ableitung
-    derivative_f = diff(f, x)
-    print(f"Funktion: {f}")
-    print(f"Ableitung: {derivative_f}")
-    
-    # Berechnung: Integral
-    integral_f = integral(f, x)
-    print(f"Integral: {integral_f}")
-    
-    # Beispiel für ein Plot (erfordert matplotlib)
-    # P = plot(f, (x, -2, 2))
-    # P.show()
+w = json.loads(sys.argv[1])
 
-if __name__ == "__main__":
-    sage_test()
+w = np.array(w, dtype=int)
+
+m = decoder.decode(w)
+
+print(list(map(int,m)))
