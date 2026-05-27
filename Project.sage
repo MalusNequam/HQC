@@ -200,11 +200,11 @@ h, s = pk
 x, y = sk
 
 
-A.decryption(sk, (U, V))
+# A.decryption(sk, (U, V))
 
-# for u in U:
-#     U_list.append(u.list() + [0]*(269 - len(u.list())))
-# # print(U_list)
+for u in U:
+    U_list.append(u.list() + [0]*(269 - len(u.list())))
+print(U_list)
 
 # for v in V:
 #     V_list.append(v.list() + [0]*(256 - len(v.list())))
