@@ -98,13 +98,10 @@ class HQC:
         bytes_seed_ek = bytes(seed_ek)
         h = self.sample_vect(bytes_seed_ek + b"h")
         s = x + h * y
-        print(y.list())
-        print(x.list())
-        print(h.list())
-        print(s.list())
+       
 
         pk = (h, s)
-        sk = (s, y)
+        sk = (x, y)
         return (pk, sk)
 
 
@@ -187,34 +184,35 @@ class HQC:
 
 
 # def __init__(self, n, R_w, R_e, R_r, r, m, k_RM, delta, l):
-A = HQC(n = 20, R_w = 3, R_e = 7, R_r = 7, r = 1, m = 8, k_RM = 9, delta = 0, l = 256)
-seed = b"148332895738958439482344"
+A = HQC(n = 269, R_w = 6, R_e = 7, R_r = 7, r = 1, m = 8, k_RM = 9, delta = 0, l = 256)
+seed = b"123"
 ctx_1, ctx_2 = A.I(seed)
 ctx_2 = A.XOF_init(ctx_2)
 ctx_2 = A.XOF_get_bytes(ctx_2, 5)
 
 pk, sk = A.Keygen(seed)
 
-# U, V = A.Encryption("Klopf, Klopf! Wer da? Bremen!", pk, seed)
+U, V = A.Encryption("Klopf, Klopf! Wer da? Bremen!", pk, seed)
 
-# U_list = []
-# V_list = []
-# h, s = pk
-# h_list = []
-# s_list = []
+U_list = []
+V_list = []
+h, s = pk
+x, y = sk
+
 
 # A.decryption(sk, (U, V))
 
-# # for u in U:
-# #     U_list.append(u.list() + [0]*(269 - len(u.list())))
-# # print(U_list)
+for u in U:
+    U_list.append(u.list() + [0]*(269 - len(u.list())))
+print(U_list)
 
-# # for v in V:
-# #     V_list.append(v.list() + [0]*(256 - len(v.list())))
+# for v in V:
+#     V_list.append(v.list() + [0]*(256 - len(v.list())))
 # # print(V_list)
-# #
-# #print(sk[0].list())
-# print(sk[1].list())
+
+# print(x.list())
+# print()
+# print(y.list())
 
 
 
