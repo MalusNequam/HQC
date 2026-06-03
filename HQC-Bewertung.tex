@@ -1,0 +1,69 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[backend=bibtex,style=numeric,sorting=none]{biblatex}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amssymb, amsthm} % Mathe
+\usepackage{geometry}
+\geometry{a4paper, left=3cm, right=2.5cm, top=2.5cm, bottom=3cm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{csquotes}
+\usepackage{biblatex}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{pdfpages}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{hyperref}
+\addbibresource{literatur.bib}
+
+\newtheorem{theorem}{Satz}[chapter]
+
+
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{korollar}[theorem]{Korollar}
+\newtheorem{bemerkung}[theorem]{Bemerkung}
+\newtheorem{satz}[theorem]{Satz}
+
+\theoremstyle{remark}
+\newtheorem{beispiel}[theorem]{Beispiel}
+
+
+
+\begin{document}
+
+
+\vspace*{2cm}
+\chapter*{Ist die Challange vollständig?}
+
+Die Challange enthält alles was ich brauche um den Angriff durchzuführen. Ich habe den Public-Key, U, V und eine 
+funktionierende Decryption-Funktion.
+
+\chapter{Ist es möglich, den geheimen Schlüssel aus dem öffentlichen Schlüssel zu extrahieren?}
+
+Ich konnte den geheimen Schlüssel extrahieren. Ich habe den Schlüssel vier mal extrahiert und brauchte dabei im 
+Schnitt ca. 6000 Iterationen. (Eine Iteration ist das bestimmen einer Permuationsmatrix H für H * P).
+
+\chapter{Ist es klar, wie die Entschlüsselungs-Funktion aufgerufen werden muss?}
+
+Ja. 
+
+\chapter{Gibt die Entschlüsselungsfunktion bei Eingabe des Chiffretexts und des geheimen Schlüssels den Klartext wieder?}
+
+Ja. Er lautet: 
+
+    
+\chapter{Kann irgendetwas verbessert werden?}
+
+\begin{itemize}
+    \item Im Code kann mehr mit Variablen gearbeitet werden. Die Decryption-Funktion ist recht unübersichtlich, da 
+    U und V nicht als Variablen in die Funktion eingefügt werden, die wurden nur reinkoppiert, was sehr unübersichtlich 
+    ist.
+    \item Sk war noch in der Decryption-Funktion. Sollte entfernt werden.
+    \item Der Public-Key war s,h und nicht h, s.
+\end{itemize}
+
+
+\end{document}
+
